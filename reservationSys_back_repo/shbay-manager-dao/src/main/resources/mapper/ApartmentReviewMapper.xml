@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.ApartmentReviewMapper">
+  <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.ApartmentReview">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="apply_id" jdbcType="INTEGER" property="applyId" />
+    <result column="stage" jdbcType="INTEGER" property="stage" />
+    <result column="is_pass" jdbcType="INTEGER" property="isPass" />
+    <result column="reviewer" jdbcType="VARCHAR" property="reviewer" />
+    <result column="review_time" jdbcType="TIMESTAMP" property="reviewTime" />
+    <result column="review_opinion" jdbcType="VARCHAR" property="reviewOpinion" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, apply_id, stage, is_pass, reviewer, review_time, review_opinion, del_flag, create_time, 
+    create_user, update_time, update_user
+  </sql>
+  <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.ApartmentReviewExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_apartment_review
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ust.shbay.manager.entity.ApartmentReviewExample">
+    delete from t_apartment_review
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ust.shbay.manager.entity.ApartmentReview">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apartment_review (apply_id, stage, is_pass, 
+      reviewer, review_time, review_opinion, 
+      del_flag, create_time, create_user, 
+      update_time, update_user)
+    values (#{applyId,jdbcType=INTEGER}, #{stage,jdbcType=INTEGER}, #{isPass,jdbcType=INTEGER}, 
+      #{reviewer,jdbcType=VARCHAR}, #{reviewTime,jdbcType=TIMESTAMP}, #{reviewOpinion,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.ApartmentReview">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apartment_review
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
+        apply_id,
+      </if>
+      <if test="stage != null">
+        stage,
+      </if>
+      <if test="isPass != null">
+        is_pass,
+      </if>
+      <if test="reviewer != null">
+        reviewer,
+      </if>
+      <if test="reviewTime != null">
+        review_time,
+      </if>
+      <if test="reviewOpinion != null">
+        review_opinion,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
+        #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="stage != null">
+        #{stage,jdbcType=INTEGER},
+      </if>
+      <if test="isPass != null">
+        #{isPass,jdbcType=INTEGER},
+      </if>
+      <if test="reviewer != null">
+        #{reviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewTime != null">
+        #{reviewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewOpinion != null">
+        #{reviewOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ust.shbay.manager.entity.ApartmentReviewExample" resultType="java.lang.Long">
+    select count(*) from t_apartment_review
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_apartment_review
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.applyId != null">
+        apply_id = #{record.applyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stage != null">
+        stage = #{record.stage,jdbcType=INTEGER},
+      </if>
+      <if test="record.isPass != null">
+        is_pass = #{record.isPass,jdbcType=INTEGER},
+      </if>
+      <if test="record.reviewer != null">
+        reviewer = #{record.reviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reviewTime != null">
+        review_time = #{record.reviewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reviewOpinion != null">
+        review_opinion = #{record.reviewOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_apartment_review
+    set id = #{record.id,jdbcType=INTEGER},
+      apply_id = #{record.applyId,jdbcType=INTEGER},
+      stage = #{record.stage,jdbcType=INTEGER},
+      is_pass = #{record.isPass,jdbcType=INTEGER},
+      reviewer = #{record.reviewer,jdbcType=VARCHAR},
+      review_time = #{record.reviewTime,jdbcType=TIMESTAMP},
+      review_opinion = #{record.reviewOpinion,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <select id="selectByCondition" parameterType="com.ust.shbay.manager.entity.vo.ApartmentReviewHiQueryDO"
+          resultType="com.ust.shbay.manager.entity.vo.ApartmentReviewVO">
+    select review.id as 'reviewId', review.is_pass as 'reviewResult', review.review_opinion as 'reviewOpinion',
+    review.review_time as 'reviewTime', review.reviewer as 'reviewer',
+    apply.id as 'applyId', apply.name as 'name', apply.phone as 'phone', apply.nationality as 'nationality',
+    apply.id_number as 'idNumber', apply.apply_date as 'applyDate', apply.status as 'applyStatus',
+    company.company_name as 'companyName',dict.title as 'houseType'
+    from t_apartment_review review
+    inner join t_apartment_apply apply on apply.id = review.apply_id and apply.del_flag = 1
+    inner join t_company company on company.id = apply.company_origin_id and company.del_flag = 1
+    left join t_dict_info dict on dict.id = apply.house_type and dict.del_flag = 1
+    where review.del_flag = 1
+    <if test="condition.stage != null">
+      and review.stage = #{condition.stage,jdbcType=INTEGER}
+    </if>
+    <if test="condition.houseType != null">
+      and apply.house_type = #{condition.houseType,jdbcType=INTEGER}
+    </if>
+    <if test="condition.name != null and condition.name != ''">
+      and apply.name like #{condition.name,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.companyName != null and condition.companyName != ''">
+      and company.company_name like #{condition.companyName,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.applyStatus != null">
+      and apply.status = #{condition.applyStatus,jdbcType=INTEGER}
+    </if>
+    <if test="condition.reviewStatus != null">
+      and review.is_pass = #{condition.reviewStatus,jdbcType=INTEGER}
+    </if>
+    order by review.id desc
+  </select>
+</mapper>
+

@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.MeetingMapper">
+  <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.Meeting">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="seat_num" jdbcType="INTEGER" property="seatNum" />
+    <result column="am_begin_time" jdbcType="VARCHAR" property="amBeginTime" />
+    <result column="am_end_time" jdbcType="VARCHAR" property="amEndTime" />
+    <result column="pm_begin_time" jdbcType="VARCHAR" property="pmBeginTime" />
+    <result column="pm_end_time" jdbcType="VARCHAR" property="pmEndTime" />
+    <!--<result column="computer_num" jdbcType="INTEGER" property="computerNum" />-->
+    <!--<result column="teca_num" jdbcType="INTEGER" property="tecaNum" />-->
+    <!--<result column="projection_num" jdbcType="INTEGER" property="projectionNum" />-->
+    <!--<result column="hand_microphone_num" jdbcType="INTEGER" property="handMicrophoneNum" />-->
+    <!--<result column="gooseneck_microphone_num" jdbcType="INTEGER" property="gooseneckMicrophoneNum" />-->
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap1" type="com.ust.shbay.manager.entity.vo.meeting.MeetingVO">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="seat_num" jdbcType="INTEGER" property="seatNum" />
+    <result column="am_begin_time" jdbcType="VARCHAR" property="amBeginTime" />
+    <result column="am_end_time" jdbcType="VARCHAR" property="amEndTime" />
+    <result column="pm_begin_time" jdbcType="VARCHAR" property="pmBeginTime" />
+    <result column="pm_end_time" jdbcType="VARCHAR" property="pmEndTime" />
+    <!--<result column="computer_num" jdbcType="INTEGER" property="computerNum" />-->
+    <!--<result column="teca_num" jdbcType="INTEGER" property="tecaNum" />-->
+    <!--<result column="projection_num" jdbcType="INTEGER" property="projectionNum" />-->
+    <!--<result column="hand_microphone_num" jdbcType="INTEGER" property="handMicrophoneNum" />-->
+    <!--<result column="gooseneck_microphone_num" jdbcType="INTEGER" property="gooseneckMicrophoneNum" />-->
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="type_name" jdbcType="VARCHAR" property="meetingTypeName" />
+    <collection property="tRelation" ofType="com.ust.shbay.manager.entity.TRelation">
+      <id column="id1" property="id" />
+      <result column="type1" property="type" />
+      <result column="original_id1" property="originalId" ></result>
+      <result column="url1" property="fileUrl" />
+      <result column="del_flag1" property="delFlag"  />
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, `name`, `type`, `position`, area, seat_num, am_begin_time, am_end_time, pm_begin_time,
+    pm_end_time,
+--     computer_num, teca_num, projection_num, hand_microphone_num, gooseneck_microphone_num,
+     del_flag, create_time, create_user, update_time, update_user
+  </sql>
+  <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.MeetingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_meeting
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ust.shbay.manager.entity.MeetingExample">
+    delete from t_meeting
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ust.shbay.manager.entity.Meeting">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_meeting (`name`, `type`, `position`,
+    area, seat_num, am_begin_time,
+    am_end_time, pm_begin_time, pm_end_time,
+--     computer_num, teca_num, projection_num,
+--     hand_microphone_num, gooseneck_microphone_num,
+    del_flag, create_time,
+    create_user, update_time, update_user
+    )
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR},
+    #{area,jdbcType=INTEGER}, #{seatNum,jdbcType=INTEGER}, #{amBeginTime,jdbcType=VARCHAR},
+    #{amEndTime,jdbcType=VARCHAR}, #{pmBeginTime,jdbcType=VARCHAR}, #{pmEndTime,jdbcType=VARCHAR},
+--     #{computerNum,jdbcType=INTEGER}, #{tecaNum,jdbcType=INTEGER}, #{projectionNum,jdbcType=INTEGER},
+--     #{handMicrophoneNum,jdbcType=INTEGER}, #{gooseneckMicrophoneNum,jdbcType=INTEGER},
+     #{delFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+    #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.Meeting">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_meeting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="seatNum != null">
+        seat_num,
+      </if>
+      <if test="amBeginTime != null">
+        am_begin_time,
+      </if>
+      <if test="amEndTime != null">
+        am_end_time,
+      </if>
+      <if test="pmBeginTime != null">
+        pm_begin_time,
+      </if>
+      <if test="pmEndTime != null">
+        pm_end_time,
+      </if>
+      <!--<if test="computerNum != null">-->
+        <!--computer_num,-->
+      <!--</if>-->
+      <!--<if test="tecaNum != null">-->
+        <!--teca_num,-->
+      <!--</if>-->
+      <!--<if test="projectionNum != null">-->
+        <!--projection_num,-->
+      <!--</if>-->
+      <!--<if test="handMicrophoneNum != null">-->
+        <!--hand_microphone_num,-->
+      <!--</if>-->
+      <!--<if test="gooseneckMicrophoneNum != null">-->
+        <!--gooseneck_microphone_num,-->
+      <!--</if>-->
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=INTEGER},
+      </if>
+      <if test="seatNum != null">
+        #{seatNum,jdbcType=INTEGER},
+      </if>
+      <if test="amBeginTime != null">
+        #{amBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amEndTime != null">
+        #{amEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pmBeginTime != null">
+        #{pmBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pmEndTime != null">
+        #{pmEndTime,jdbcType=VARCHAR},
+      </if>
+      <!--<if test="computerNum != null">-->
+        <!--#{computerNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="tecaNum != null">-->
+        <!--#{tecaNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="projectionNum != null">-->
+        <!--#{projectionNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="handMicrophoneNum != null">-->
+        <!--#{handMicrophoneNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="gooseneckMicrophoneNum != null">-->
+        <!--#{gooseneckMicrophoneNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ust.shbay.manager.entity.MeetingExample" resultType="java.lang.Long">
+    select count(*) from t_meeting
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_meeting
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.position != null">
+        `position` = #{record.position,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=INTEGER},
+      </if>
+      <if test="record.seatNum != null">
+        seat_num = #{record.seatNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.amBeginTime != null">
+        am_begin_time = #{record.amBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amEndTime != null">
+        am_end_time = #{record.amEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pmBeginTime != null">
+        pm_begin_time = #{record.pmBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pmEndTime != null">
+        pm_end_time = #{record.pmEndTime,jdbcType=VARCHAR},
+      </if>
+      <!--<if test="record.computerNum != null">-->
+        <!--computer_num = #{record.computerNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.tecaNum != null">-->
+        <!--teca_num = #{record.tecaNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.projectionNum != null">-->
+        <!--projection_num = #{record.projectionNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.handMicrophoneNum != null">-->
+        <!--hand_microphone_num = #{record.handMicrophoneNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.gooseneckMicrophoneNum != null">-->
+        <!--gooseneck_microphone_num = #{record.gooseneckMicrophoneNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_meeting
+    set id = #{record.id,jdbcType=INTEGER},
+    `name` = #{record.name,jdbcType=VARCHAR},
+    `type` = #{record.type,jdbcType=INTEGER},
+    `position` = #{record.position,jdbcType=VARCHAR},
+    area = #{record.area,jdbcType=INTEGER},
+    seat_num = #{record.seatNum,jdbcType=INTEGER},
+    am_begin_time = #{record.amBeginTime,jdbcType=VARCHAR},
+    am_end_time = #{record.amEndTime,jdbcType=VARCHAR},
+    pm_begin_time = #{record.pmBeginTime,jdbcType=VARCHAR},
+    pm_end_time = #{record.pmEndTime,jdbcType=VARCHAR},
+--     computer_num = #{record.computerNum,jdbcType=INTEGER},
+--     teca_num = #{record.tecaNum,jdbcType=INTEGER},
+--     projection_num = #{record.projectionNum,jdbcType=INTEGER},
+--     hand_microphone_num = #{record.handMicrophoneNum,jdbcType=INTEGER},
+--     gooseneck_microphone_num = #{record.gooseneckMicrophoneNum,jdbcType=INTEGER},
+    del_flag = #{record.delFlag,jdbcType=INTEGER},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    create_user = #{record.createUser,jdbcType=VARCHAR},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    update_user = #{record.updateUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ust.shbay.manager.entity.Meeting" >
+    update t_meeting
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.position != null">
+        `position` = #{record.position,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=INTEGER},
+      </if>
+      <if test="record.seatNum != null">
+        seat_num = #{record.seatNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.amBeginTime != null">
+        am_begin_time = #{record.amBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amEndTime != null">
+        am_end_time = #{record.amEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pmBeginTime != null">
+        pm_begin_time = #{record.pmBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pmEndTime != null">
+        pm_end_time = #{record.pmEndTime,jdbcType=VARCHAR},
+      </if>
+      <!--<if test="record.computerNum != null">-->
+        <!--computer_num = #{record.computerNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.tecaNum != null">-->
+        <!--teca_num = #{record.tecaNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.projectionNum != null">-->
+        <!--projection_num = #{record.projectionNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.handMicrophoneNum != null">-->
+        <!--hand_microphone_num = #{record.handMicrophoneNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="record.gooseneckMicrophoneNum != null">-->
+        <!--gooseneck_microphone_num = #{record.gooseneckMicrophoneNum,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+   where id = #{record.id}
+  </update>
+  <select id="selectMeetingId" parameterType="INTEGER" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from t_meeting where id=#{id}
+  </select>
+  <sql id="Base_Column_List1" >
+      t_meeting.id,t_meeting.name, t_meeting.type, t_meeting.position, t_meeting.area, t_meeting.seat_num, t_meeting.am_begin_time,t_meeting.am_end_time, t_meeting.pm_begin_time,
+    t_meeting.pm_end_time,
+--     t_meeting.computer_num, t_meeting.teca_num, t_meeting.projection_num, t_meeting.hand_microphone_num, t_meeting.gooseneck_microphone_num,
+    t_meeting.del_flag, t_meeting.create_time, t_meeting.create_user, t_meeting.update_time, t_meeting.update_user
+  </sql>
+  <select id="selectALL" resultMap="BaseResultMap1">
+    select  <include refid="Base_Column_List1"></include>,
+    b.id id1,b.type type1,b.original_id original_id1,b.file_url url1,b.del_flag del_flag1,
+    dict.title type_name
+    from t_meeting
+    left join t_relation b on b.original_id=t_meeting.id and b.del_flag=1 and b.type="meeting"
+    left join t_dict_info dict on dict.id = t_meeting.type and dict.del_flag=1
+    order by t_meeting.id desc
+  </select>
+</mapper>
+

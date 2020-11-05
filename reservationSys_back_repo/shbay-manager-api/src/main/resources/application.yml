@@ -1,0 +1,42 @@
+server:
+  port: 10056
+
+spring:
+  application:
+    name: shbay-manager
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/shbay?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: test
+    password: test123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  jackson:
+    default-property-inclusion: non_null
+
+mybatis:
+  typeAliasesPackage: com.ust.shbay.manager.entity
+  mapperLocations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 生产环境改为false，禁用swagger
+swagger:
+  enable: false
+
+# 会话有效期(单位小时)
+sessionExpire: 72
+
+#全局定时任务开关 true开启全局定时任务  false关闭全局定时任务
+jobSwitch: true
+
+#默认密码
+defaultPassword: qq123456
+

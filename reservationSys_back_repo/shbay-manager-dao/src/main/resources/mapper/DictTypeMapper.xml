@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.DictTypeMapper">
+    <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.DictType">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="sort_order" jdbcType="DECIMAL" property="sortOrder" />
+    </resultMap>
+
+    <sql id="Base">
+        id,title,`type`,description,sort_order,del_flag,create_time,create_user,update_time,update_user
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.DictType">
+        insert into  t_dict_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test=" title != null">
+                title,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test=" description != null">
+                description,
+            </if>
+            <if test="sortOrder != null">
+                sort_order,
+            </if>
+            <if test="delFlag !=null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                #{sortOrder,jdbcType=DECIMAL},
+            </if>
+            <if test="delFlag !=null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ust.shbay.manager.entity.DictType">
+        update t_dict_type
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder,jdbcType=DECIMAL},
+            </if>
+            <if test="delFlag != null">
+                del_flag= #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time=#{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user=#{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user=#{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base"/>
+        from t_dict_type where id=#{id ,jdbcType=INTEGER}
+    </select>
+
+    <select id="getDictTypeListByTitle" parameterType="String" resultMap="BaseResultMap">
+        select id,title,`type`,description,sort_order
+        from t_dict_type where del_flag = 1
+        <if test="title != null">
+            and title like #{title}
+        </if>
+        order by update_time desc
+    </select>
+
+</mapper>

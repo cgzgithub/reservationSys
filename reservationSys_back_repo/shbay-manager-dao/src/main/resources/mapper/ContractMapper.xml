@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.ContractMapper">
+  <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.Contract">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="contract_num" jdbcType="VARCHAR" property="contractNum" />
+    <result column="contract_name" jdbcType="VARCHAR" property="contractName" />
+    <result column="contract_type" jdbcType="INTEGER" property="contractType" />
+    <result column="first_party" jdbcType="VARCHAR" property="firstParty" />
+    <result column="second_party" jdbcType="VARCHAR" property="secondParty" />
+    <result column="sign_time" jdbcType="DATE" property="signTime" />
+    <result column="sign_person" jdbcType="VARCHAR" property="signPerson" />
+    <result column="begin_time" jdbcType="DATE" property="beginTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
+    <result column="final_money" jdbcType="DECIMAL" property="finalMoney" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, project_id, contract_num, contract_name, contract_type, first_party, second_party, sign_time,
+    sign_person, begin_time, end_time, `status`, total_money, final_money, del_flag, 
+    create_time, create_user, update_time, update_user
+  </sql>
+  <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.ContractExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ust.shbay.manager.entity.ContractExample">
+    delete from t_contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ust.shbay.manager.entity.Contract">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_contract (project_id, contract_num, contract_name, contract_type,
+      first_party, second_party, sign_time, 
+      sign_person, begin_time, end_time, 
+      `status`, total_money, final_money, 
+      del_flag, create_time, create_user, 
+      update_time, update_user)
+    values (#{projectId,jdbcType=INTEGER}, #{contractNum,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR},
+    #{contractType,jdbcType=INTEGER},
+      #{firstParty,jdbcType=VARCHAR}, #{secondParty,jdbcType=VARCHAR}, #{signTime,jdbcType=DATE}, 
+      #{signPerson,jdbcType=VARCHAR}, #{beginTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
+      #{status,jdbcType=INTEGER}, #{totalMoney,jdbcType=DECIMAL}, #{finalMoney,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.Contract">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_contract
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="contractNum != null">
+        contract_num,
+      </if>
+      <if test="contractNum != null">
+        contract_name,
+      </if>
+      <if test="contractType != null">
+        contract_type,
+      </if>
+      <if test="firstParty != null">
+        first_party,
+      </if>
+      <if test="secondParty != null">
+        second_party,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="signPerson != null">
+        sign_person,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="totalMoney != null">
+        total_money,
+      </if>
+      <if test="finalMoney != null">
+        final_money,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="contractNum != null">
+        #{contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractType != null">
+        #{contractType,jdbcType=INTEGER},
+      </if>
+      <if test="firstParty != null">
+        #{firstParty,jdbcType=VARCHAR},
+      </if>
+      <if test="secondParty != null">
+        #{secondParty,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=DATE},
+      </if>
+      <if test="signPerson != null">
+        #{signPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totalMoney != null">
+        #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="finalMoney != null">
+        #{finalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ust.shbay.manager.entity.ContractExample" resultType="java.lang.Long">
+    select count(*) from t_contract
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_contract
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null">
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractNum != null">
+        contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractName != null">
+        contract_name = #{record.contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractType != null">
+        contract_type = #{record.contractType,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstParty != null">
+        first_party = #{record.firstParty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secondParty != null">
+        second_party = #{record.secondParty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signTime != null">
+        sign_time = #{record.signTime,jdbcType=DATE},
+      </if>
+      <if test="record.signPerson != null">
+        sign_person = #{record.signPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null">
+        begin_time = #{record.beginTime,jdbcType=DATE},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=DATE},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalMoney != null">
+        total_money = #{record.totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.finalMoney != null">
+        final_money = #{record.finalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_contract
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      contract_name = #{record.contractName,jdbcType=VARCHAR},
+      contract_type = #{record.contractType,jdbcType=INTEGER},
+      first_party = #{record.firstParty,jdbcType=VARCHAR},
+      second_party = #{record.secondParty,jdbcType=VARCHAR},
+      sign_time = #{record.signTime,jdbcType=DATE},
+      sign_person = #{record.signPerson,jdbcType=VARCHAR},
+      begin_time = #{record.beginTime,jdbcType=DATE},
+      end_time = #{record.endTime,jdbcType=DATE},
+      `status` = #{record.status,jdbcType=INTEGER},
+      total_money = #{record.totalMoney,jdbcType=DECIMAL},
+      final_money = #{record.finalMoney,jdbcType=DECIMAL},
+      del_flag = #{record.delFlag,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateSelective" parameterType="com.ust.shbay.manager.entity.Contract">
+    update t_contract
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null">
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractNum != null">
+        contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractName != null">
+        contract_name = #{record.contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractType != null">
+        contract_type = #{record.contractType,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstParty != null">
+        first_party = #{record.firstParty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secondParty != null">
+        second_party = #{record.secondParty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signTime != null">
+        sign_time = #{record.signTime,jdbcType=DATE},
+      </if>
+      <if test="record.signPerson != null">
+        sign_person = #{record.signPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null">
+        begin_time = #{record.beginTime,jdbcType=DATE},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=DATE},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalMoney != null">
+        total_money = #{record.totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.finalMoney != null">
+        final_money = #{record.finalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByCondition" parameterType="com.ust.shbay.manager.entity.vo.ContractQueryDO"
+          resultType="com.ust.shbay.manager.entity.vo.ContractVO">
+    select contract.id, contract.project_id as 'projectId', contract.contract_num as 'contractNum',
+    contract.contract_name as 'contractName',
+    contract.contract_type as 'contractType', contract.first_party as 'firstParty', contract.second_party as 'secondParty',
+    contract.sign_time as 'signTime', contract.sign_person as 'signPerson', contract.begin_time as 'beginTime',
+    contract.end_time as 'endTime', contract.`status`, contract.total_money as 'totalMoney', contract.final_money as 'finalMoney',
+    project.number as 'projectNum', project.name as 'projectName', project.project_type as 'projectType',
+    sum(node.payment_money) as 'totalPaidMoney'
+    from  t_contract contract
+    inner join t_project project on contract.project_id = project.id
+    left join t_contract_node node on node.contract_id = contract.id and node.del_flag = 1
+    where contract.del_flag = 1
+    <if test="condition.projectId != null">
+      and contract.project_id = #{condition.projectId,jdbcType=INTEGER}
+    </if>
+    <if test="condition.contractType != null">
+      and contract.contract_type = #{condition.contractType,jdbcType=INTEGER}
+    </if>
+    <if test="condition.projectType != null">
+      and project.project_type = #{condition.projectType,jdbcType=INTEGER}
+    </if>
+    <if test="condition.status != null">
+      and contract.status = #{condition.status,jdbcType=INTEGER}
+    </if>
+    <if test="condition.contractNum != null and condition.contractNum != ''">
+      and contract.contract_num like #{condition.contractNum,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.contractName != null and condition.contractName != ''">
+      and contract.contract_name like #{condition.contractName,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.projectNum != null and condition.projectNum != ''">
+      and project.number like #{condition.projectNum,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.projectName != null and condition.projectName != ''">
+      and project.name like #{condition.projectName,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.firstParty != null and condition.firstParty != ''">
+      and contract.first_party like #{condition.firstParty,jdbcType=VARCHAR}
+    </if>
+    <if test="condition.secondParty != null and condition.secondParty != ''">
+      and contract.second_party like #{condition.secondParty,jdbcType=VARCHAR}
+    </if>
+    group by contract.id
+    order by contract.update_time desc
+  </select>
+</mapper>

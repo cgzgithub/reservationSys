@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.ApartmentMapper">
+  <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.Apartment">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="address_ridgepole" jdbcType="VARCHAR" property="addressRidgepole" />
+    <result column="address_number" jdbcType="VARCHAR" property="addressNumber" />
+    <result column="address_room" jdbcType="VARCHAR" property="addressRoom" />
+    <result column="residential_area_name" jdbcType="VARCHAR" property="residentialAreaName" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="house_type" jdbcType="INTEGER" property="houseType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.ust.shbay.manager.entity.vo.ApartmentVO">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="address_ridgepole" jdbcType="VARCHAR" property="addressRidgepole" />
+    <result column="address_number" jdbcType="VARCHAR" property="addressNumber" />
+    <result column="address_room" jdbcType="VARCHAR" property="addressRoom" />
+    <result column="residential_area_name" jdbcType="VARCHAR" property="residentialAreaName" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="house_type" jdbcType="INTEGER" property="houseType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <collection property="tRelation" ofType="com.ust.shbay.manager.entity.TRelation">
+      <id column="id1" property="id" />
+      <result column="type1" property="type" />
+      <result column="original_id1" property="originalId" ></result>
+      <result column="url1" property="fileUrl" />
+      <result column="del_flag1" property="delFlag"  />
+    </collection>
+  </resultMap>
+
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, `number`, address_ridgepole, address_number, address_room, residential_area_name, 
+    area, house_type, `status`, del_flag, create_time, create_user, update_time, update_user
+  </sql>
+  <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.ApartmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_apartment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ust.shbay.manager.entity.ApartmentExample">
+    delete from t_apartment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ust.shbay.manager.entity.Apartment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apartment (`number`, address_ridgepole, address_number, 
+      address_room, residential_area_name, area, 
+      house_type, `status`, del_flag, 
+      create_time, create_user, update_time, 
+      update_user)
+    values (#{number,jdbcType=VARCHAR}, #{addressRidgepole,jdbcType=VARCHAR}, #{addressNumber,jdbcType=VARCHAR}, 
+      #{addressRoom,jdbcType=VARCHAR}, #{residentialAreaName,jdbcType=VARCHAR}, #{area,jdbcType=INTEGER}, 
+      #{houseType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.Apartment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apartment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="number != null">
+        `number`,
+      </if>
+      <if test="addressRidgepole != null">
+        address_ridgepole,
+      </if>
+      <if test="addressNumber != null">
+        address_number,
+      </if>
+      <if test="addressRoom != null">
+        address_room,
+      </if>
+      <if test="residentialAreaName != null">
+        residential_area_name,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="houseType != null">
+        house_type,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="addressRidgepole != null">
+        #{addressRidgepole,jdbcType=VARCHAR},
+      </if>
+      <if test="addressNumber != null">
+        #{addressNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="addressRoom != null">
+        #{addressRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialAreaName != null">
+        #{residentialAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=INTEGER},
+      </if>
+      <if test="houseType != null">
+        #{houseType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ust.shbay.manager.entity.ApartmentExample" resultType="java.lang.Long">
+    select count(*) from t_apartment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_apartment
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null">
+        `number` = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressRidgepole != null">
+        address_ridgepole = #{record.addressRidgepole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressNumber != null">
+        address_number = #{record.addressNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressRoom != null">
+        address_room = #{record.addressRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.residentialAreaName != null">
+        residential_area_name = #{record.residentialAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseType != null">
+        house_type = #{record.houseType,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_apartment
+    set id = #{record.id,jdbcType=INTEGER},
+      `number` = #{record.number,jdbcType=VARCHAR},
+      address_ridgepole = #{record.addressRidgepole,jdbcType=VARCHAR},
+      address_number = #{record.addressNumber,jdbcType=VARCHAR},
+      address_room = #{record.addressRoom,jdbcType=VARCHAR},
+      residential_area_name = #{record.residentialAreaName,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=INTEGER},
+      house_type = #{record.houseType,jdbcType=INTEGER},
+      `status` = #{record.status,jdbcType=INTEGER},
+      del_flag = #{record.delFlag,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectById" parameterType="INTEGER" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from t_apartment
+    where id=#{id} and del_flag = 1
+  </select>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ust.shbay.manager.entity.Apartment">
+    update t_apartment
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null">
+        `number` = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressRidgepole != null">
+        address_ridgepole = #{record.addressRidgepole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressNumber != null">
+        address_number = #{record.addressNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressRoom != null">
+        address_room = #{record.addressRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.residentialAreaName != null">
+        residential_area_name = #{record.residentialAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseType != null">
+        house_type = #{record.houseType,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+ where  id=#{record.id,jdbcType=INTEGER}
+  </update>
+
+  <sql id="Base_Column_List1">
+    t_apartment.id,  t_apartment.`number`,  t_apartment.address_ridgepole,  t_apartment.address_number,  t_apartment.address_room,  t_apartment.residential_area_name,
+     t_apartment.area,  t_apartment.house_type,  t_apartment.`status`,  t_apartment.del_flag,  t_apartment.create_time,  t_apartment.create_user,  t_apartment.update_time,  t_apartment.update_user
+  </sql>
+
+  <select id="selectALL" resultMap="BaseResultMap1">
+    select  <include refid="Base_Column_List1"></include>, b.id id1,b.type type1,b.original_id original_id1,b.file_url url1,b.del_flag del_flag1
+    from  t_apartment left join t_relation b on b.original_id= t_apartment.id and b.del_flag=1 and b.type="apartment"
+    where   t_apartment.del_flag=1 order by  t_apartment.id desc
+  </select>
+</mapper>

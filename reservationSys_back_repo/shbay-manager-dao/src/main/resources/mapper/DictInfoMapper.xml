@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.DictInfoMapper">
+    <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.DictInfo">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="value" jdbcType="VARCHAR" property="value" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="sort_order" jdbcType="DECIMAL" property="sortOrder" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="dict_type_id" jdbcType="INTEGER" property="dictTypeId" />
+        <result column="is_sys" jdbcType="INTEGER" property="isSys" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base">
+        id,title,`value`,description,sort_order,status,dict_type_id,is_sys,del_flag,create_time,create_user,update_time,update_user
+    </sql>
+
+    <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.DictInfoExample" resultMap="BaseResultMap">
+        select
+        <include refid="Base" />
+        from t_dict_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.DictInfo">
+        insert into t_dict_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="value != null">
+                `value`,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="sortOrder != null">
+                sort_order,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="dictTypeId != null">
+                dict_type_id,
+            </if>
+            <if test="isSys != null">
+                is_sys,
+            </if>
+            <if test="delFlag !=null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                #{sortOrder,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="dictTypeId != null">
+                #{dictTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="isSys != null">
+                #{isSys,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ust.shbay.manager.entity.Guide">
+        update t_dict_info
+        <set>
+            <if test="title != null">
+                title = #{title ,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                `value` = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description ,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder ,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status = #{status ,jdbcType=INTEGER},
+            </if>
+            <if test="dictTypeId != null">
+                dict_type_id = #{dictTypeId ,jdbcType=INTEGER},
+            </if>
+            <if test="isSys != null">
+                is_sys= #{isSys,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag= #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time=#{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user=#{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user=#{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="com.ust.shbay.manager.entity.DictInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base"/>
+        from t_dict_info where id=#{id ,jdbcType=INTEGER}
+    </select>
+
+</mapper>

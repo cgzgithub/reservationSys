@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.ShowroomBookingMapper">
+    <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.ShowroomBooking">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="account_id" jdbcType="VARCHAR" property="accountId"/>
+        <result column="showroom_id" jdbcType="INTEGER" property="showroomId"/>
+        <result column="visit_date" jdbcType="DATE" property="visitDate"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="booking_number" jdbcType="INTEGER" property="bookingNumber"/>
+        <result column="company_type_id" jdbcType="INTEGER" property="companyTypeId"/>
+        <result column="booking_persion" jdbcType="VARCHAR" property="bookingPersion"/>
+        <result column="booking_phone" jdbcType="VARCHAR" property="bookingPhone"/>
+        <result column="guide_id" jdbcType="INTEGER" property="guideId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="passageway" jdbcType="INTEGER" property="passageway"/>
+        <result column="cancel_channel" jdbcType="INTEGER" property="cancelChannel"/>
+        <result column="cancel_reason_id" jdbcType="INTEGER" property="cancelReasonId"/>
+        <result column="cancel_time" jdbcType="TIMESTAMP" property="cancelTime"/>
+        <result column="actual_num" jdbcType="INTEGER" property="actualNum"/>
+        <result column="appraise" jdbcType="INTEGER" property="appraise"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, account_id, showroom_id, visit_date, begin_time, end_time, booking_number,
+    company_type_id, booking_persion, booking_phone, guide_id, `status`, passageway, 
+    cancel_channel, cancel_reason_id, cancel_time, actual_num, appraise, del_flag, create_time, 
+    create_user, update_time, update_user
+  </sql>
+
+    <select id="selectById" parameterType="INTEGER" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_showroom_booking where id=#{id}
+    </select>
+    <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.ShowroomBookingExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_showroom_booking
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="com.ust.shbay.manager.entity.ShowroomBookingExample">
+        delete from t_showroom_booking
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.ust.shbay.manager.entity.ShowroomBooking">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_showroom_booking (account_id, showroom_id, visit_date,
+        begin_time, end_time, booking_number,
+        company_type_id, booking_persion, booking_phone,
+        guide_id, `status`, passageway,
+        cancel_channel, cancel_reason_id, cancel_time,
+        actual_num, appraise, del_flag,
+        create_time, create_user, update_time,
+        update_user)
+        values (#{accountId,jdbcType=INTEGER},#{showroomId,jdbcType=INTEGER}, #{visitDate,jdbcType=DATE},
+        #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR},
+        #{companyTypeId,jdbcType=INTEGER}, #{bookingPersion,jdbcType=VARCHAR}, #{bookingPhone,jdbcType=VARCHAR},
+        #{guideId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{passageway,jdbcType=INTEGER},
+        #{cancelChannel,jdbcType=INTEGER}, #{cancelReasonId,jdbcType=INTEGER}, #{cancelTime,jdbcType=TIMESTAMP},
+        #{actualNum,jdbcType=INTEGER}, #{appraise,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+        #{updateUser,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.ShowroomBooking">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_showroom_booking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">
+                account_id,
+            </if>
+            <if test="showroomId != null">
+                showroom_id,
+            </if>
+            <if test="visitDate != null">
+                visit_date,
+            </if>
+            <if test="beginTime != null">
+                begin_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="bookingNumber != null">
+                booking_number,
+            </if>
+            <if test="companyTypeId != null">
+                company_type_id,
+            </if>
+            <if test="bookingPersion != null">
+                booking_persion,
+            </if>
+            <if test="bookingPhone != null">
+                booking_phone,
+            </if>
+            <if test="guideId != null">
+                guide_id,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="passageway != null">
+                passageway,
+            </if>
+            <if test="cancelChannel != null">
+                cancel_channel,
+            </if>
+            <if test="cancelReasonId != null">
+                cancel_reason_id,
+            </if>
+            <if test="cancelTime != null">
+                cancel_time,
+            </if>
+            <if test="actualNum != null">
+                actual_num,
+            </if>
+            <if test="appraise != null">
+                appraise,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">
+                #{accountId,jdbcType=VARCHAR},
+            </if>
+            <if test="showroomId != null">
+                #{showroomId,jdbcType=INTEGER},
+            </if>
+            <if test="visitDate != null">
+                #{visitDate,jdbcType=DATE},
+            </if>
+            <if test="beginTime != null">
+                #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="bookingNumber != null">
+                #{bookingNumber,jdbcType=INTEGER},
+            </if>
+            <if test="companyTypeId != null">
+                #{companyTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="bookingPersion != null">
+                #{bookingPersion,jdbcType=VARCHAR},
+            </if>
+            <if test="bookingPhone != null">
+                #{bookingPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="guideId != null">
+                #{guideId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="passageway != null">
+                #{passageway,jdbcType=INTEGER},
+            </if>
+            <if test="cancelChannel != null">
+                #{cancelChannel,jdbcType=INTEGER},
+            </if>
+            <if test="cancelReasonId != null">
+                #{cancelReasonId,jdbcType=INTEGER},
+            </if>
+            <if test="cancelTime != null">
+                #{cancelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualNum != null">
+                #{actualNum,jdbcType=INTEGER},
+            </if>
+            <if test="appraise != null">
+                #{appraise,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.ust.shbay.manager.entity.ShowroomBookingExample"
+            resultType="java.lang.Long">
+        select count(*) from t_showroom_booking
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_showroom_booking
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.accountId != null">
+                account_id = #{record.accountId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.showroomId != null">
+                showroom_id = #{record.showroomId,jdbcType=INTEGER},
+            </if>
+            <if test="record.visitDate != null">
+                visit_date = #{record.visitDate,jdbcType=DATE},
+            </if>
+            <if test="record.beginTime != null">
+                begin_time = #{record.beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.endTime != null">
+                end_time = #{record.endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bookingNumber != null">
+                booking_number = #{record.bookingNumber,jdbcType=INTEGER},
+            </if>
+            <if test="record.companyTypeId != null">
+                company_type_id = #{record.companyTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.bookingPersion != null">
+                booking_persion = #{record.bookingPersion,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bookingPhone != null">
+                booking_phone = #{record.bookingPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.guideId != null">
+                guide_id = #{record.guideId,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                `status` = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.passageway != null">
+                passageway = #{record.passageway,jdbcType=INTEGER},
+            </if>
+            <if test="record.cancelChannel != null">
+                cancel_channel = #{record.cancelChannel,jdbcType=INTEGER},
+            </if>
+            <if test="record.cancelReasonId != null">
+                cancel_reason_id = #{record.cancelReasonId,jdbcType=INTEGER},
+            </if>
+            <if test="record.cancelTime != null">
+                cancel_time = #{record.cancelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.actualNum != null">
+                actual_num = #{record.actualNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.appraise != null">
+                appraise = #{record.appraise,jdbcType=INTEGER},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateUser != null">
+                update_user = #{record.updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_showroom_booking
+        set id = #{record.id,jdbcType=INTEGER},
+        account_id = #{record.accountId,jdbcType=VARCHAR},
+        showroom_Id = #{record.showroomId,jdbcType=INTEGER},
+        visit_date = #{record.visitDate,jdbcType=DATE},
+        begin_time = #{record.beginTime,jdbcType=VARCHAR},
+        end_time = #{record.endTime,jdbcType=VARCHAR},
+        booking_number = #{record.bookingNumber,jdbcType=INTEGER},
+        company_type_id = #{record.companyTypeId,jdbcType=INTEGER},
+        booking_persion = #{record.bookingPersion,jdbcType=VARCHAR},
+        booking_phone = #{record.bookingPhone,jdbcType=VARCHAR},
+        guide_id = #{record.guideId,jdbcType=INTEGER},
+        `status` = #{record.status,jdbcType=INTEGER},
+        passageway = #{record.passageway,jdbcType=INTEGER},
+        cancel_channel = #{record.cancelChannel,jdbcType=INTEGER},
+        cancel_reason_id = #{record.cancelReasonId,jdbcType=INTEGER},
+        cancel_time = #{record.cancelTime,jdbcType=TIMESTAMP},
+        actual_num = #{record.actualNum,jdbcType=INTEGER},
+        appraise = #{record.appraise,jdbcType=INTEGER},
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_user = #{record.updateUser,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+    <update id="update" parameterType="com.ust.shbay.manager.entity.ShowroomBooking">
+        update t_showroom_booking
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.accountId != null">
+                account_id = #{record.accountId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.showroomId != null">
+                showroom_id = #{record.showroomId,jdbcType=INTEGER},
+            </if>
+            <if test="record.visitDate != null">
+                visit_date = #{record.visitDate,jdbcType=DATE},
+            </if>
+            <if test="record.beginTime != null">
+                begin_time = #{record.beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.endTime != null">
+                end_time = #{record.endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bookingNumber != null">
+                booking_number = #{record.bookingNumber,jdbcType=INTEGER},
+            </if>
+            <if test="record.companyTypeId != null">
+                company_type_id = #{record.companyTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.bookingPersion != null">
+                booking_persion = #{record.bookingPersion,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bookingPhone != null">
+                booking_phone = #{record.bookingPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.guideId != null">
+                guide_id = #{record.guideId,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                `status` = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.passageway != null">
+                passageway = #{record.passageway,jdbcType=INTEGER},
+            </if>
+            <if test="record.cancelChannel != null">
+                cancel_channel = #{record.cancelChannel,jdbcType=INTEGER},
+            </if>
+            <if test="record.cancelReasonId != null">
+                cancel_reason_id = #{record.cancelReasonId,jdbcType=INTEGER},
+            </if>
+            <if test="record.cancelTime != null">
+                cancel_time = #{record.cancelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.actualNum != null">
+                actual_num = #{record.actualNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.appraise != null">
+                appraise = #{record.appraise,jdbcType=INTEGER},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateUser != null">
+                update_user = #{record.updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{record.id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getReceptionNumAndDate" parameterType="map"
+            resultType="com.ust.shbay.manager.entity.vo.showroom.ReceptionNumAndDate">
+        select t1.visitDate as 'visitDate',coalesce(t2.number, 0) as 'number'
+        from
+        (
+          select @cdate := date_add(@cdate, interval - 1 day) as 'visitDate'
+          from(select @cdate := date_add(#{endDate}, interval + 1 day) from t_cdate ) t
+          where @cdate > #{beginDate}
+        ) t1
+        left join (
+          select booking.visit_date as 'visitDate',SUM(booking.actual_num) as 'number'
+          from t_showroom_booking booking
+          inner join t_showroom room on room.id = booking.showroom_id
+          where visit_date between #{beginDate} and #{endDate} and room.id = #{showroomId}
+          and booking.del_flag = 1 and booking.`status`=1 and room.del_flag = 1
+          group by visitDate
+        ) t2
+        on t1.visitDate = t2.visitDate
+        order by t1.visitDate asc
+  </select>
+</mapper>

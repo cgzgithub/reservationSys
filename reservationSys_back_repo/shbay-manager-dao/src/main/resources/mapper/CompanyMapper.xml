@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ust.shbay.manager.dao.CompanyMapper">
+    <resultMap id="BaseResultMap" type="com.ust.shbay.manager.entity.Company">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="credit_recognition_id" jdbcType="VARCHAR" property="creditRecognitionId"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="total_number" jdbcType="INTEGER" property="totalNumber"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, credit_recognition_id, company_name, total_number, del_flag, create_time, create_user, 
+    update_time, update_user
+  </sql>
+    <select id="selectByExample" parameterType="com.ust.shbay.manager.entity.CompanyExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_company
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="com.ust.shbay.manager.entity.CompanyExample">
+        delete from t_company
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.ust.shbay.manager.entity.Company">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_company (credit_recognition_id, company_name,
+        total_number, del_flag, create_time,
+        create_user, update_time, update_user
+        )
+        values (#{creditRecognitionId,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR},
+        #{totalNumber,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ust.shbay.manager.entity.Company">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="creditRecognitionId != null">
+                credit_recognition_id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="totalNumber != null">
+                total_number,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="creditRecognitionId != null">
+                #{creditRecognitionId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="totalNumber != null">
+                #{totalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.ust.shbay.manager.entity.CompanyExample" resultType="java.lang.Long">
+        select count(*) from t_company
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_company
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.creditRecognitionId != null">
+                credit_recognition_id = #{record.creditRecognitionId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyName != null">
+                company_name = #{record.companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.totalNumber != null">
+                total_number = #{record.totalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateUser != null">
+                update_user = #{record.updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_company
+        set id = #{record.id,jdbcType=INTEGER},
+        credit_recognition_id = #{record.creditRecognitionId,jdbcType=VARCHAR},
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+        total_number = #{record.totalNumber,jdbcType=INTEGER},
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_user = #{record.updateUser,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+    <select id="selectById" parameterType="INTEGER" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_company where id=#{id}
+    </select>
+    <update id="updateById" parameterType="com.ust.shbay.manager.entity.Company">
+        update t_company
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.creditRecognitionId != null">
+                credit_recognition_id = #{record.creditRecognitionId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyName != null">
+                company_name = #{record.companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.totalNumber != null">
+                total_number = #{record.totalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateUser != null">
+                update_user = #{record.updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{record.id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByCreditRecognitionId" parameterType="STRING" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_company where credit_recognition_id =#{creditRecognitionId}
+    </select>
+
+    <select id="selectByCompanyName" parameterType="STRING" resultMap="base1">
+        SELECT
+            k.id,
+            k.credit_recognition_id,
+            k.company_name,
+            k.total_number total,
+            k.update_time,
+            IFNULL(p.count, 0) count1,
+            k.total_number - IFNULL(p.count, 0) remainder
+        FROM
+        (
+            (
+                SELECT t_company.id id, t_company.credit_recognition_id, t_company.company_name, t_company.total_number, t_company.update_time
+                FROM t_company
+                WHERE t_company.del_flag = 1
+            ) k
+            LEFT JOIN
+            (
+                SELECT count(id) 'count', t_apartment_apply.company_origin_id companyId
+                FROM t_apartment_apply
+                WHERE t_apartment_apply.del_flag = 1 AND t_apartment_apply.`status` > 1
+                GROUP BY companyId
+            ) p
+            ON p.companyId = k.id
+        )
+        where 1 = 1
+        <if test="companyName!=null ">
+        and company_name like concat('%',#{companyName},'%')
+        </if>
+        order by update_time desc
+    </select>
+    <resultMap id="base1" type="com.ust.shbay.manager.entity.vo.ApartmentTotalAndRemainder">
+        <result column="id" property="id"/>
+        <result column="credit_recognition_id" property="creditRecognitionId"/>
+        <result column="company_name" property="companyName"/>
+        <result column="total" property="totalNumber"/>
+        <result column="count1" property="count1"/>
+        <result column="remainder" property="remainder"/>
+    </resultMap>
+    <select id="selectCompanyNameById" parameterType="INTEGER" resultType="STRING">
+    select company_name
+    from t_company where id=#{id}
+  </select>
+
+</mapper>
