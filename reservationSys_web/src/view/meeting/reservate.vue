@@ -70,7 +70,7 @@
                             {{item.bookingDate + ' '}}{{item.bookingWeek}}
                         </div>
                         <div class="body-main">
-                            <div class="body-item" @click="selectCell(item,item1,index0,index1)" :class="{'gray-cell':item1.status == -1,'booked-cell':item1.status == 1,'select-cell':item1.currentSelect}" v-for="(item1,index1) in item.childBookingTimeList" :key="index1">
+                            <div class="body-item"  @click="selectCell(item,item1,index0,index1)" :class="{'gray-cell':item1.status == -1,'booked-cell':item1.status == 1,'select-cell':item1.currentSelect,'body-item-hover':item1.inmove}" v-for="(item1,index1) in item.childBookingTimeList" :key="index1">
                             </div>
                         </div>
                     </div>
@@ -154,6 +154,15 @@ export default {
             this.getData()
             this.showBtn = false
         },
+        // 划过单元格
+        // enterCell(rowItem,cellItem,rowIndex,cellIndex) {
+        //     console.log('llll')
+        //     this.$set(cellItem,'inmove',true)
+        // },
+        // leaveCell(rowItem,cellItem,rowIndex,cellIndex) {
+        //     console.log('llll')
+        //     // this.$set(cellItem,'inmove',false)
+        // },
         // 选中单元格
         selectCell(rowItem,cellItem,rowIndex,cellIndex) {
             const that = this;
@@ -165,38 +174,48 @@ export default {
                     })
                     that.$set(cellItem,'currentSelect',true)
                     that.currentGap = new Array(cellItem);
-                }else if(rowS == rowE){ // 当前选中在同一行
-                    let max = Math.max(cellS,cellE);
-                    let min = Math.min(cellS,cellE);
-                    let selectArr = that.timeList[rowS].childBookingTimeList.slice(min,max+1);
-                    let selectAble = selectArr.every(function(item){
-                        return item.status == 0
-                    })
-                    if(selectAble){ // 如果当前区间内不存在不可用的格子，选中该区间
-                        for(let i=min;i<=max;i++){
-                            that.$set(that.timeList[rowS].childBookingTimeList[i],'currentSelect',true)
-                            that.$set(that.timeList[rowS].childBookingTimeList[i],'index',i)
+                }else {
+                    if(rowS == rowE){ // 当前选中在同一行
+                        let max = Math.max(cellS,cellE);
+                        let min = Math.min(cellS,cellE);
+                        let selectArr = that.timeList[rowS].childBookingTimeList.slice(min,max+1);
+                        let selectAble = selectArr.every(function(item){
+                            return item.status == 0
+                        })
+                        if(selectAble){ // 如果当前区间内不存在不可用的格子，选中该区间
+                            for(let i=min;i<=max;i++){
+                                that.$set(that.timeList[rowS].childBookingTimeList[i],'currentSelect',true)
+                                that.$set(that.timeList[rowS].childBookingTimeList[i],'index',i)
+                            }
+                            that.currentGap = selectArr;
+                        }else{ // 如果当前区间内存在不可用的格子，选中当前格子
+                            that.currentGap = new Array(cellItem);
                         }
-                        that.currentGap = selectArr;
-                    }else{ // 如果当前区间内存在不可用的格子，选中当前格子
+                    }else if(rowS != rowE){ // 跨行，选中当前格子
                         that.currentGap = new Array(cellItem);
                     }
-                }else if(rowS != rowE){ // 跨行，选中当前格子
-                    that.currentGap = new Array(cellItem);
                 }
             }
             // 可点击
             if(cellItem.status == 0){
                 // 清空选中
-                for(let value of this.timeList) {
+                if(that.currentGap.length > 0){
+                    for(let value of this.timeList) {
                         if(value.childBookingTimeList) {
                             for(let childValue of value.childBookingTimeList){
                                 that.$set(childValue,'currentSelect',false)
                             }
                         }
+                    }
                 }
+                
                 // 默认选中当前单元格
-                that.$set(cellItem,'currentSelect',true)
+                if(!cellItem.currentSelect){
+                    that.$set(cellItem,'currentSelect',true)
+                }else{
+                    that.$set(cellItem,'currentSelect',false)
+                }
+                
                 that.showBtn = true;
                 that.currentRow = rowItem;
                 if(!this.startFlag){
@@ -319,7 +338,7 @@ div{
             box-sizing: border-box;
             display: flex;
             text-align: center;
-            border: 1px solid rgb(161, 161, 161);
+            border: 2px solid rgb(144, 177, 202);
             .header-wrapper{
                 width: 100%;
                 display: flex;
@@ -327,7 +346,7 @@ div{
                     width: 15%;
                     height: 80px;
                     line-height: 80px;
-                    border-right: 1px solid rgb(161, 161, 161);
+                    border-right: 2px solid rgb(144, 177, 202);
                 }
                 .header-main{
                     width: 85%;
@@ -335,9 +354,9 @@ div{
                         width: 100%;
                         height: 40px;
                         display: flex;
-                        border-bottom: 1px solid rgb(161, 161, 161);
+                        border-bottom: 2px solid rgb(144, 177, 202);
                         .header-morning{
-                            border-right: 1px solid rgb(161, 161, 161);
+                            border-right: 2px solid rgb(144, 177, 202);
                             width: 41%;
                         }
                         .header-afternoon{
@@ -354,7 +373,7 @@ div{
                         flex: 1;
                         height: 40px;
                         line-height: 40px;
-                        border-right: 1px solid rgb(161, 161, 161);
+                        border-right: 2px solid rgb(144, 177, 202);
                         overflow: hidden;
                     }
                     div:last-child{
@@ -365,26 +384,26 @@ div{
                 .header-title{
                     height: 40px;
                     text-align: center;
-                    border-bottom: 1px solid rgb(161, 161, 161);;
+                    border-bottom: 2px solid rgb(144, 177, 202);;
                 }
             }
             
         }
         .body{
             width: 100%;
-            border: 1px solid rgb(161, 161, 161);
+            border: 2px solid rgb(144, 177, 202);
             border-top:none;
             border-bottom: none;
             .body-wrap{
                 display: flex;
                 width: 100%;
-                border-bottom: 1px solid rgb(161, 161, 161);
+                border-bottom: 2px solid rgb(144, 177, 202);
                 .body-time{
                     width: 15%;
                     height: 40px;
                     line-height: 40px;
                     text-align: center;
-                    border-right: 1px solid rgb(161, 161, 161);
+                    border-right: 2px solid rgb(144, 177, 202);
                 }
                 .body-main{
                     width: 85%;
@@ -393,7 +412,10 @@ div{
                         cursor: pointer;
                         flex: 1;
                         height: 40px;
-                        border-right: 1px solid rgb(161, 161, 161);
+                        border-right: 2px solid rgb(144, 177, 202);
+                    }
+                    .body-item-hover{
+                        background-color: rgb(196, 204, 230);
                     }
                     div:last-child{
                         border:none;
@@ -405,9 +427,9 @@ div{
                 // border-color: #F2F2F2 !important;
             }
             .booked-cell{
-                background-color: #FFCC66;
+                background-color: rgb(189, 141, 45);
                 // border: none!important;
-                // border-color: #FFCC66 !important;
+                // border-color: rgb(189, 141, 45) !important;
             }
             .select-cell{
                 background-color: #617FDE;
@@ -442,7 +464,7 @@ div{
 					border-radius: 5%;
 				}
 				.yellow{
-					background-color: #FFCC66;
+					background-color: rgb(189, 141, 45);
 				}
 				.gray{
 					background-color: #F2F2F2;
